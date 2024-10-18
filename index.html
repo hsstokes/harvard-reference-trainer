@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Formatting Challenge</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Lora:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f0e6d2;
+        }
+        .book-background {
+            background-image: 
+                linear-gradient(90deg, transparent 79px, #abced4 79px, #abced4 81px, transparent 81px),
+                linear-gradient(#eee .1em, transparent .1em);
+            background-size: 100% 1.2em;
+            padding: 20px;
+            border: 1px solid #d4b483;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 5px;
+        }
+        h1 {
+            font-family: 'Lora', serif;
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            color: #2c3e50;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 .bold {
+            font-weight: 700;
+        }
+        h1 .italic {
+            font-style: italic;
+        }
+        #instructions {
+            margin-bottom: 20px;
+            font-size: 0.9em;
+            line-height: 1.4;
+            color: #2c3e50;
+        }
+        #instructions h3 {
+            font-family: 'Lora', serif;
+            color: #2c3e50;
+            border-bottom: 1px solid #abced4;
+            padding-bottom: 5px;
+        }
+        #game-area {
+            background-color: white;
+            border: 1px solid #d4b483;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 5px;
+        }
+        #text-display {
+            min-height: 100px;
+            border: 1px dashed #b2a390;
+            padding: 10px;
+            margin-bottom: 10px;
+            font-family: 'Lora', serif;
+            font-size: 16px;
+            background-color: #fffbf0;
+        }
+        .word-box {
+            display: inline-block;
+            margin: 5px;
+            padding: 5px 10px;
+            border: 1px solid #d4b483;
+            border-radius: 3px;
+            cursor: pointer;
+            background-color: #fff;
+            transition: background-color 0.3s;
+        }
+        .word-box:hover {
+            background-color: #f0e6d2;
+        }
+        .word-box.selected {
+            background-color: #d4b483;
+            color: #fff;
+        }
+        #controls, #reference-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        #score, #feedback {
+            margin-bottom: 10px;
+        }
+        button, select, input[type="text"], input[type="color"] {
+            padding: 5px 10px;
+            border: 1px solid #d4b483;
+            border-radius: 3px;
+            font-family: 'Roboto', sans-serif;
+        }
+        button {
+            background-color: #d4b483;
+            color: #2c3e50;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #c1a173;
+        }
+        label {
+            display: inline-block;
+            margin-right: 5px;
+            color: #2c3e50;
+        }
+        #score, #feedback {
+            font-family: 'Lora', serif;
+            color: #2c3e50;
+        }
+    </style>
+</head>
+<body>
+    <div class="book-background">
+        <h1>
+            <span class="bold">Text</span> <span class="italic">Formatting</span> <span class="bold">Challenge</span>
+        </h1>
+        <div id="instructions">
+            <h3>How to Play:</h3>
+            <ol>
+                <li>To rearrange the words:
+                    <ul>
+                        <li>Click on a word to select it (it will be highlighted).</li>
+                        <li>Then click on another word to swap their positions.</li>
+                        <li>You can deselect a word by clicking on it again.</li>
+                    </ul>
+                </li>
+                <li>Use the formatting controls to style the text.</li>
+                <li>Apply reference formatting to the author and title.</li>
+                <li>Click "Check Formatting" or "Check Harvard Referencing" to see your score.</li>
+            </ol>
+        </div>
+        <div id="game-area">
+            <div id="text-display"></div>
+            <div id="controls">
+                <label for="font-family">Font:</label>
+                <select id="font-family">
+                    <option value="Arial, sans-serif">Arial (Good)</option>
+                    <option value="'Times New Roman', serif">Times New Roman (Good)</option>
+                    <option value="'Comic Sans MS', cursive">Comic Sans (Poor)</option>
+                    <option value="Impact, sans-serif">Impact (Poor)</option>
+                </select>
+                <label for="font-size">Size:</label>
+                <select id="font-size">
+                    <option value="12">12pt</option>
+                    <option value="14">14pt</option>
+                    <option value="16" selected>16pt</option>
+                    <option value="18">18pt</option>
+                </select>
+                <label for="text-align">Align:</label>
+                <select id="text-align">
+                    <option value="left">Left</option>
+                    <option value="center">Center</option>
+                    <option value="right">Right</option>
+                </select>
+                <label for="text-color">Color:</label>
+                <input type="color" id="text-color" value="#000000">
+                <button onclick="applyFormatting()">Apply Formatting</button>
+            </div>
+            <div id="reference-controls">
+                <label for="author-style">Author Style:</label>
+                <select id="author-style">
+                    <option value="normal">Normal</option>
+                    <option value="bold">Bold</option>
+                </select>
+                <label for="title-style">Title Style:</label>
+                <select id="title-style">
+                    <option value="normal">Normal</option>
+                    <option value="italic">Italic</option>
+                </select>
+                <button onclick="applyReferenceFormatting()">Apply Reference Formatting</button>
+            </div>
+            <button onclick="checkFormatting()">Check Formatting</button>
+            <button onclick="checkHarvardReferencing()">Check Harvard Referencing</button>
+            <button onclick="resetGame()">Reset Game</button>
+        </div>
+        <div id="score">Score: 0</div>
+        <div id="feedback"></div>
+    </div>
+
+    <script>
+        const textDisplay = document.getElementById('text-display');
+        const scoreElement = document.getElementById('score');
+        const feedbackElement = document.getElementById('feedback');
+
+        let score = 0;
+        let words = ['Gogh, V.', '(1889)', '"The Starry Night"'];
+
+        function initializeGame() {
+            shuffleArray(words);
+            updateDisplay();
+            score = 0;
+            updateScore();
+            feedbackElement.innerText = 'Game reset. Click on the words to rearrange them in the correct order and apply formatting.';
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function updateDisplay() {
+            textDisplay.innerHTML = '';
+            words.forEach((word, index) => {
+                const wordBox = document.createElement('span');
+                wordBox.classList.add('word-box');
+                wordBox.innerText = word;
+                wordBox.onclick = () => selectWord(index);
+                textDisplay.appendChild(wordBox);
+            });
+        }
+
+        let selectedIndex = -1;
+
+        function selectWord(index) {
+            if (selectedIndex === -1) {
+                selectedIndex = index;
+                textDisplay.children[index].classList.add('selected');
+            } else {
+                swapWords(selectedIndex, index);
+                selectedIndex = -1;
+                updateDisplay();
+            }
+        }
+
+        function swapWords(index1, index2) {
+            [words[index1], words[index2]] = [words[index2], words[index1]];
+        }
+
+        function applyFormatting() {
+            const fontFamily = document.getElementById('font-family').value;
+            const fontSize = document.getElementById('font-size').value;
+            const textAlign = document.getElementById('text-align').value;
+            const textColor = document.getElementById('text-color').value;
+
+            textDisplay.style.fontFamily = fontFamily;
+            textDisplay.style.fontSize = `${fontSize}px`;
+            textDisplay.style.textAlign = textAlign;
+            textDisplay.style.color = textColor;
+        }
+
+        function applyReferenceFormatting() {
+            const authorStyle = document.getElementById('author-style').value;
+            const titleStyle = document.getElementById('title-style').value;
+
+            if (words[0].includes('Gogh')) {
+                textDisplay.children[0].style.fontWeight = authorStyle === 'bold' ? 'bold' : 'normal';
+            }
+            if (words[2].includes('Starry Night')) {
+                textDisplay.children[2].style.fontStyle = titleStyle === 'italic' ? 'italic' : 'normal';
+            }
+        }
+
+        function checkFormatting() {
+            let formatScore = 0;
+            const fontFamily = document.getElementById('font-family').value;
+            const fontSize = document.getElementById('font-size').value;
+            const textAlign = document.getElementById('text-align').value;
+
+            if (fontFamily.includes('Arial') || fontFamily.includes('Times New Roman')) formatScore++;
+            if (fontSize === '12' || fontSize === '14') formatScore++;
+            if (textAlign === 'left') formatScore++;
+
+            score = formatScore;
+            updateScore();
+            feedbackElement.innerText = `Formatting score: ${formatScore}/3`;
+        }
+
+        function checkHarvardReferencing() {
+            let referenceScore = 0;
+            if (words[0] === 'Gogh, V.' && words[1] === '(1889)' && words[2] === '"The Starry Night"') referenceScore++;
+            if (textDisplay.children[0].style.fontWeight === 'bold') referenceScore++;
+            if (textDisplay.children[2].style.fontStyle === 'italic') referenceScore++;
+
+            score = referenceScore;
+            updateScore();
+            feedbackElement.innerText = `Harvard referencing score: ${referenceScore}/3`;
+        }
+
+        function updateScore() {
+            scoreElement.innerText = `Score: ${score}`;
+        }
+
+        function resetGame() {
+            initializeGame();
+        }
+
+        window.onload = initializeGame;
+    </script>
+</body>
+</html>
